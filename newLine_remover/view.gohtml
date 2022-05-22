@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewLine Remover</title>
+    <style>
+        input{
+            height: 50px;
+            width: 750px;
+        }
+        #right{
+            margin-top: 60px;
+        }
+        p{
+            height: 100px;
+            width: 750px;
+            border: 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="left">
+        <h4>paste your text here</h4>
+        <form action="/paste" method="POST">
+            <div><input type="text" name="paste"></div>
+            <div><input type="submit"></div>
+        </form>
+    </div>
+
+    <div id="right">
+        <h4>copy your text from here</h4>
+        <p>{{.}}</p>
+    </div>
+
+</body>
+</html>

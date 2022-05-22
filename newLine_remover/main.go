@@ -1,9 +1,10 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
-	"html/template"
+	"strings"
 )
 
 func check(err error) {
@@ -20,9 +21,8 @@ func homeHandler(writer http.ResponseWriter, request *http.Request) {
 }
 var copy string
 func pasteHandler(writer http.ResponseWriter, request *http.Request) {
-	copy = request.FormValue("paste")
-	// _, err := writer.Write([]byte(copy))
-	// check(err)
+	res := request.FormValue("paste")
+	copy = strings.Replace(res, "\n", " ", -1)
 	http.Redirect(writer, request, "/home", http.StatusFound)
 }
 

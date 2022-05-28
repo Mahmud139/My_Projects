@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello from Snippetbox"))
-}
-
 func checkErr(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello from Snippetbox"))
 }
 
 func main() {

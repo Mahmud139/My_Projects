@@ -23,11 +23,11 @@ var copy string
 func pasteHandler(writer http.ResponseWriter, request *http.Request) {
 	res := request.FormValue("paste")
 	copy = strings.Replace(res, "\n", " ", -1)
-	http.Redirect(writer, request, "/home", http.StatusFound)
+	http.Redirect(writer, request, "/", http.StatusFound)
 }
 
 func main() {
-	http.HandleFunc("/home", homeHandler)
+	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/paste", pasteHandler)
 	err := http.ListenAndServe("localhost:8080", nil)
 	check(err)

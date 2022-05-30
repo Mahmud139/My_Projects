@@ -39,7 +39,7 @@ func main() {
 	mux.HandleFunc("/snippet", showSnippet)
 	mux.HandleFunc("/snippet/create", createSnippet)
 
-	log.Println("Starting server on localhost:4000")
-	err := http.ListenAndServe(":4000", mux)
+	log.Println("Starting server on localhost:8080")
+	err := http.ListenAndServe("localhost:8080", mux)
 	checkErr(err)
 }

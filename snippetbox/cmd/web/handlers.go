@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
-	"html/template"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -13,9 +14,16 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tmpl, err := template.ParseFiles("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl")
-	checkErr(err)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+		return
+	}
 	err = tmpl.Execute(w, nil)
-	checkErr(err)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+	}
 	//w.Write([]byte("Hello from SnippetBox"))
 }
 

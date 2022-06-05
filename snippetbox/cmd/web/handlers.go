@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"html/template"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -11,7 +12,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	w.Write([]byte("Hello from SnippetBox"))
+	tmpl, err := template.ParseFiles("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl")
+	checkErr(err)
+	err = tmpl.Execute(w, nil)
+	checkErr(err)
+	//w.Write([]byte("Hello from SnippetBox"))
 }
 
 func showSnippet(w http.ResponseWriter, r *http.Request) {

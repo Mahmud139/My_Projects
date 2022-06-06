@@ -19,6 +19,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl",
 		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
+		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
 	}
 
 	tmpl, err := template.ParseFiles(files...)

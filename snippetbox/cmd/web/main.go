@@ -1,8 +1,10 @@
 package main
 
 import (
+	//"flag"
 	"log"
 	"net/http"
+	"os"
 )
 
 func checkErr(err error) {
@@ -12,6 +14,10 @@ func checkErr(err error) {
 }
 
 func main() {
+	addr := os.Getenv("SNIPPETBOX_ADDR")
+	// addr := flag.String("addr", "localhost:8080",  "HTTP network address")
+	// flag.Parse()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/snippet", showSnippet)
@@ -20,7 +26,10 @@ func main() {
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	mux.Handle("/static/",http.StripPrefix("/static", fileServer))
 
-	log.Println("Starting Server on localhost:8080")
-	err := http.ListenAndServe("localhost:8080", mux)
+	log.Printf("Starting Server on %v \n", addr)
+	err := http.ListenAndServe(addr, mux)
 	checkErr(err)
+	// log.Printf("Starting Server on %v \n", *addr)
+	// err := http.ListenAndServe(*addr, mux)
+	// checkErr(err)
 }

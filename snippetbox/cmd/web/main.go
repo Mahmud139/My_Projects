@@ -4,14 +4,15 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	// "os"
 )
 
-func checkErr(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+// func checkErr(err error) {
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// }
 // type Config struct {
 // 	Addr string
 // 	StaticDir string
@@ -25,6 +26,9 @@ func main() {
 	// addr := os.Getenv("SNIPPETBOX_ADDR")
 	addr := flag.String("addr", "localhost:8080",  "HTTP network address")
 	flag.Parse()
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate | log.Ltime)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate | log.Ltime | log.Lshortfile)
 	
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
@@ -40,7 +44,9 @@ func main() {
 	// log.Printf("Starting Server on %v \n", addr)
 	// err := http.ListenAndServe(addr, mux)
 	// checkErr(err)
-	log.Printf("Starting Server on %v \n", *addr)
+	//log.Printf("Starting Server on %v \n", *addr)
+	infoLog.Printf("Starting Server on %v \n", *addr)
 	err := http.ListenAndServe(*addr, mux)
-	checkErr(err)
+	//checkErr(err)
+	errorLog.Fatal(err)
 }

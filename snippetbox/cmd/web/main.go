@@ -12,19 +12,19 @@ func checkErr(err error) {
 		log.Fatal(err)
 	}
 }
-type Config struct {
-	Addr string
-	StaticDir string
-}
+// type Config struct {
+// 	Addr string
+// 	StaticDir string
+// }
 
 func main() {
-	cfg := new(Config)
-	flag.StringVar(&cfg.Addr, "addr", "localhost:8080", "HTTP network address")
-	flag.StringVar(&cfg.StaticDir, "static-dir", "./ui/static", "Path to static assets")
-	flag.Parse()
-	// addr := os.Getenv("SNIPPETBOX_ADDR")
-	// addr := flag.String("addr", "localhost:8080",  "HTTP network address")
+	// cfg := new(Config)
+	// flag.StringVar(&cfg.Addr, "addr", "localhost:8080", "HTTP network address")
+	// flag.StringVar(&cfg.StaticDir, "static-dir", "./ui/static", "Path to static assets")
 	// flag.Parse()
+	// addr := os.Getenv("SNIPPETBOX_ADDR")
+	addr := flag.String("addr", "localhost:8080",  "HTTP network address")
+	flag.Parse()
 	
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
@@ -34,13 +34,13 @@ func main() {
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	mux.Handle("/static/",http.StripPrefix("/static", fileServer))
 
-	log.Printf("Starting Server on %v \n", cfg.Addr)
-	err := http.ListenAndServe(cfg.Addr, mux)
-	checkErr(err)
+	// log.Printf("Starting Server on %v \n", cfg.Addr)
+	// err := http.ListenAndServe(cfg.Addr, mux)
+	// checkErr(err)
 	// log.Printf("Starting Server on %v \n", addr)
 	// err := http.ListenAndServe(addr, mux)
 	// checkErr(err)
-	// log.Printf("Starting Server on %v \n", *addr)
-	// err := http.ListenAndServe(*addr, mux)
-	// checkErr(err)
+	log.Printf("Starting Server on %v \n", *addr)
+	err := http.ListenAndServe(*addr, mux)
+	checkErr(err)
 }

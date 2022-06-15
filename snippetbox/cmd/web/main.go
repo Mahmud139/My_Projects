@@ -18,6 +18,11 @@ import (
 // 	StaticDir string
 // }
 
+type application struct {
+	errorLog *log.Logger
+	infoLog *log.Logger
+}
+
 func main() {
 	/* using pre-existing variable for command-line flags*/
 	// cfg := new(Config)
@@ -33,11 +38,16 @@ func main() {
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate | log.Ltime)
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate | log.Ltime | log.Lshortfile)
+
+	app := &application{
+		errorLog: errorLog,
+		infoLog: infoLog,
+	}
 	
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet", showSnippet)
-	mux.HandleFunc("/snippet/create", createSnippet)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/snippet", app.showSnippet)
+	mux.HandleFunc("/snippet/create", app.createSnippet)
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	mux.Handle("/static/",http.StripPrefix("/static", fileServer))

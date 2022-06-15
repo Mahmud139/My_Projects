@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	// "os"
 )
 
 // func checkErr(err error) {
@@ -45,8 +44,16 @@ func main() {
 	// err := http.ListenAndServe(addr, mux)
 	// checkErr(err)
 	//log.Printf("Starting Server on %v \n", *addr)
-	infoLog.Printf("Starting Server on %v \n", *addr)
-	err := http.ListenAndServe(*addr, mux)
+	// infoLog.Printf("Starting Server on %v \n", *addr)
+	// err := http.ListenAndServe(*addr, mux)
 	//checkErr(err)
+	//errorLog.Fatal(err)
+	infoLog.Printf("Starting Server on %v \n", *addr)
+	srv := &http.Server {
+		Addr: *addr,
+		ErrorLog: errorLog,
+		Handler: mux,
+	}
+	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }

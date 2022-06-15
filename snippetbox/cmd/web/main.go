@@ -11,6 +11,7 @@ import (
 // 	if err != nil {
 // 		log.Fatal(err)
 // 	}
+
 // }
 // type Config struct {
 // 	Addr string
@@ -18,11 +19,15 @@ import (
 // }
 
 func main() {
+	/* using pre-existing variable for command-line flags*/
 	// cfg := new(Config)
 	// flag.StringVar(&cfg.Addr, "addr", "localhost:8080", "HTTP network address")
 	// flag.StringVar(&cfg.StaticDir, "static-dir", "./ui/static", "Path to static assets")
 	// flag.Parse()
+
+	/* using Environment variable for command-line flags */
 	// addr := os.Getenv("SNIPPETBOX_ADDR")
+
 	addr := flag.String("addr", "localhost:8080",  "HTTP network address")
 	flag.Parse()
 
@@ -37,7 +42,7 @@ func main() {
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	mux.Handle("/static/",http.StripPrefix("/static", fileServer))
 
-	//logging to a file
+	/* logging to a file */
 	// file, err := os.OpenFile("/tmp/infoLog.txt", os.O_RDWR|os.O_CREATE, 0666)
 	// if err != nil {
 	// 	log.Fatal(err)
@@ -45,19 +50,24 @@ func main() {
 	// defer file.Close()
 	// infoLog := log.New(file, "INFO\t", log.Ldate | log.Ltime)
 
+	/* using pre-existing variable for command-line flags*/
 	// log.Printf("Starting Server on %v \n", cfg.Addr)
 	// err := http.ListenAndServe(cfg.Addr, mux)
 	// checkErr(err)
 
+	/* using Environment variable for command-line flags */
 	// log.Printf("Starting Server on %v \n", addr)
 	// err := http.ListenAndServe(addr, mux)
 	// checkErr(err)
 
+	/* using command-line flags and custom logger*/
 	//log.Printf("Starting Server on %v \n", *addr)
 	// infoLog.Printf("Starting Server on %v \n", *addr)
 	// err := http.ListenAndServe(*addr, mux)
 	//checkErr(err)
 	//errorLog.Fatal(err)
+
+	/* implementing the http.Server Error log using our custom logger*/
 	infoLog.Printf("Starting Server on %v \n", *addr)
 	srv := &http.Server {
 		Addr: *addr,

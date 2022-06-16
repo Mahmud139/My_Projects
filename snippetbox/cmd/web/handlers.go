@@ -9,7 +9,8 @@ import (
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		//http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 	//initialize a slice containing the paths to the two files. Note that the home.page.tmpl 
@@ -22,15 +23,17 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
+		//app.errorLog.Println(err.Error())
 		// http.Error(w, "Internal Server Error", 500)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		//http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, err)
 		return
 	}
 	err = tmpl.Execute(w, nil)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		// app.errorLog.Println(err.Error())
+		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, err)
 	}
 	//w.Write([]byte("Hello from SnippetBox"))
 }
@@ -38,7 +41,8 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
-		http.NotFound(w, r)
+		// http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 	//w.Write([]byte("Display a new snippet"))
@@ -51,7 +55,8 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		// w.WriteHeader(405)
 		// w.Write([]byte("Method not Allowed!"))
 		// http.Error(w, "Method not Allowed!", 405)
-		http.Error(w,"Method not Allowed!", http.StatusMethodNotAllowed)
+		// http.Error(w,"Method not Allowed!", http.StatusMethodNotAllowed)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 	w.Write([]byte("Create a new snippet"))

@@ -16,7 +16,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	//initialize a slice containing the paths to the two files. Note that the home.page.tmpl 
 	//must be the first file in the slice.
 	files := []string{
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmp",
+		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl",
 		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
 		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
 	}

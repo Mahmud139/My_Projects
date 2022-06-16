@@ -44,13 +44,14 @@ func main() {
 		infoLog: infoLog,
 	}
 	
+	/* transfer to routes.go file
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/snippet", app.showSnippet)
 	mux.HandleFunc("/snippet/create", app.createSnippet)
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
-	mux.Handle("/static/",http.StripPrefix("/static", fileServer))
+	mux.Handle("/static/",http.StripPrefix("/static", fileServer)) */
 
 	/* logging to a file */
 	// file, err := os.OpenFile("/tmp/infoLog.txt", os.O_RDWR|os.O_CREATE, 0666)
@@ -82,7 +83,7 @@ func main() {
 	srv := &http.Server {
 		Addr: *addr,
 		ErrorLog: errorLog,
-		Handler: mux,
+		Handler: app.routes(),
 	}
 	err := srv.ListenAndServe()
 	errorLog.Fatal(err)

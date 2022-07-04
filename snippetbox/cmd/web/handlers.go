@@ -74,4 +74,6 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 	//w.Write([]byte("Create a new snippet"))
 	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d",id), http.StatusSeeOther)
+	/*The HTTP response status code 303 See Other is a way to redirect web applications 
+	to a new URI, particularly after a HTTP POST has been performed*/
 }

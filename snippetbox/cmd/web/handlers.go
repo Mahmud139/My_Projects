@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
+	"mahmud139/snippetbox/pkg/models"
 	"net/http"
 	"strconv"
 )
@@ -45,8 +47,20 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
+
+	s, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
 	//w.Write([]byte("Display a new snippet"))
-	fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
+	//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
+	fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {

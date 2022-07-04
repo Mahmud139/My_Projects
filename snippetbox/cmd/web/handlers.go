@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
+	//"html/template"
 	"mahmud139/snippetbox/pkg/models"
 	"net/http"
 	"strconv"
@@ -15,6 +15,19 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
+
+	s, err := app.snippets.Latest()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	for _, snippet := range s {
+		fmt.Fprintf(w, "%v\n", snippet)
+	}
+
+	/* commented out for testing our multiple query rows function from snippets.go
+
 	//initialize a slice containing the paths to the two files. Note that the home.page.tmpl 
 	//must be the first file in the slice.
 	files := []string{
@@ -37,7 +50,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		app.serverError(w, err)
 	}
-	//w.Write([]byte("Hello from SnippetBox"))
+	//w.Write([]byte("Hello from SnippetBox")) */
 }
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {

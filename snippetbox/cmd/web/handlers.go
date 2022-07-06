@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	//"html/template"
+	"html/template"
 	"mahmud139/snippetbox/pkg/models"
 	"net/http"
 	"strconv"
@@ -71,9 +71,26 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	files := []string {
+		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/show.page.tmpl",
+		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
+		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	err = ts.Execute(w, s)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
 	//w.Write([]byte("Display a new snippet"))
 	//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
-	fmt.Fprintf(w, "%v", s)
+	//fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {

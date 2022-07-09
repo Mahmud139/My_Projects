@@ -24,10 +24,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := &templateData{Snippets: s}
-
-	for _, snippet := range s {
-		fmt.Fprintf(w, "%v\n", snippet)
-	}
+	// for _, snippet := range s {
+	// 	fmt.Fprintf(w, "%v\n", snippet)
+	// }
 
 	//initialize a slice containing the paths to the two files. Note that the home.page.tmpl 
 	//must be the first file in the slice.
@@ -112,7 +111,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	// during the build.
 	title := "O snail" 
 	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n- Kobayashi Issa" 
-	expires := "7"
+	expires := "30"
 
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {

@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
+	//"html/template"
 	"net/http"
 	"strconv"
 
@@ -23,6 +23,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.render(w, r, "home.page.tmpl", &templateData{
+		Snippets: s,
+	})
+
+	/*
 	data := &templateData{Snippets: s}
 	// for _, snippet := range s {
 	// 	fmt.Fprintf(w, "%v\n", snippet)
@@ -50,7 +55,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		app.serverError(w, err)
 	}
-	//w.Write([]byte("Hello from SnippetBox")) 
+	//w.Write([]byte("Hello from SnippetBox")) */
 }
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
@@ -71,6 +76,11 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.render(w, r, "show.page.tmpl", &templateData{
+		Snippet: s,
+	})
+
+	/*
 	data := &templateData{Snippet: s}
 
 	files := []string {
@@ -92,7 +102,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 
 	//w.Write([]byte("Display a new snippet"))
 	//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
-	//fmt.Fprintf(w, "%v", s)
+	//fmt.Fprintf(w, "%v", s) */
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {

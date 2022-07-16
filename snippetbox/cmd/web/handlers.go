@@ -65,7 +65,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-
+	fmt.Println("showSnippet is running", id)
 	s, err := app.snippets.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
@@ -103,6 +103,23 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Display a new snippet"))
 	//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
 	//fmt.Fprintf(w, "%v", s) */
+}
+
+func (app *application) deleteSnippet(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+
+	fmt.Println("deleteSnippet is running", id)
+
+	err = app.snippets.Delete(id)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {

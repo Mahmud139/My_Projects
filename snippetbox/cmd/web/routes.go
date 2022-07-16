@@ -21,6 +21,7 @@ func (app *application) routes() http.Handler {
 	mux.Get("/", http.HandlerFunc(app.home))
 	mux.Get("/snippet/create", http.HandlerFunc(app.createSnippetForm))
 	mux.Post("/snippet/create", http.HandlerFunc(app.createSnippet))
+	mux.Get("/snippet/delete/:id", http.HandlerFunc(app.deleteSnippet))
 	mux.Get("/snippet/:id", http.HandlerFunc(app.showSnippet))
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))

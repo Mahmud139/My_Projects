@@ -12,6 +12,7 @@
         <pre><code>{{.Content}}</code></pre>
         <div class="metadata">
             <time>Created: {{humanDate .Created}}</time>
+            <a href="/snippet/delete/{{.ID}}" id="delete">Delete</a>
             <time>Expires: {{humanDate .Expires}}</time>
         </div>
     </div>

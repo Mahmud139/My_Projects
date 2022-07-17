@@ -113,8 +113,6 @@ func (app *application) deleteSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("deleteSnippet is running", id)
-
 	err = app.snippets.Delete(id)
 	if err != nil {
 		app.serverError(w, err)

@@ -6,6 +6,8 @@ import (
 	//"html/template"
 	"net/http"
 	"strconv"
+	"strings" 
+	"unicode/utf8"
 
 	"mahmud139/snippetbox/pkg/models"
 )
@@ -65,7 +67,6 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	fmt.Println("showSnippet is running", id)
 	s, err := app.snippets.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
@@ -154,6 +155,27 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	title := r.PostForm.Get("title")
 	content := r.PostForm.Get("content")
 	expires := r.PostForm.Get("expires")
+
+	// Initialize a map to hold any validation errors.
+	errors := make(map[string]string)
+	// Check that the title field is not blank and is not more than 100 characters
+	// long. If it fails either of those checks, add a message to the errors 
+	// map using the field name as the key.
+	if strings.TrimSpace(title) == "" {
+		errors["title"] = "This field cannot be blank"
+	} else if utf8.RuneCountInString(title) > 100 {
+		errors["title"] = "This field is too long (maximum is 100 characters"
+	}
+
+	if strings.TrimSpace(content) == "" {
+		errors["content"] = "This field cannot be blank"
+	}
+
+	if strings.TrimSpace(expires) == "" {
+		errors["expires"] = "This field cannot be blank"
+	} else if expires != "365" && expires != "30" && expires != "7" {
+		errors["expires"] = "This field is invalid"
+	}
 
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {

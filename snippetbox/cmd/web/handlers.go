@@ -6,9 +6,10 @@ import (
 	//"html/template"
 	"net/http"
 	"strconv"
-	"strings" 
-	"unicode/utf8"
+	// "strings" 
+	// "unicode/utf8"
 
+	"mahmud139/snippetbox/pkg/forms"
 	"mahmud139/snippetbox/pkg/models"
 )
 
@@ -123,7 +124,9 @@ func (app *application) deleteSnippet(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Create a new snippet..."))
-	app.render(w, r, "create.page.tmpl", nil)
+	app.render(w, r, "create.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
@@ -148,6 +151,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	/*
 	// Use the r.PostForm.Get() method to retrieve the relevant data fields 
 	// from the r.PostForm map.
 	title := r.PostForm.Get("title")
@@ -181,9 +185,24 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 			FormData: r.PostForm,
 		})
 		return
-	}
+	} */
 
-	id, err := app.snippets.Insert(title, content, expires)
+	form := forms.New(r.PostForm)
+	form.Required("title", "content", "expires")
+	form.MaxLength("title", 100)
+	form.PermittedValues("expires", "365", "30", "7")
+	
+	if !form.Valid() {
+		app.render(w, r, "create.page.tmpl", &templateData{
+			Form: form,
+		})
+		return
+	}
+	
+	// Because the form data (with type url.Values) has been anonymously embedded 
+	// in the form.Form struct, we can use the Get() method to retrieve 
+	// the validated value for a particular form field.
+	id, err := app.snippets.Insert(form.Get("title"), form.Get("content"), form.Get("expires"))
 	if err != nil {
 		app.serverError(w, err)
 		return

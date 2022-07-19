@@ -11,6 +11,8 @@ import (
 // http.Handler instead of *http.ServeMux.
 func (app *application) routes() http.Handler {
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+
+	dynamicMiddleware := alice.New(app.session.Enable)
 	
 	// mux := http.NewServeMux()
 	// mux.HandleFunc("/", app.home)
@@ -18,11 +20,11 @@ func (app *application) routes() http.Handler {
 	// mux.HandleFunc("/snippet/create", app.createSnippet)
 
 	mux := pat.New()
-	mux.Get("/", http.HandlerFunc(app.home))
-	mux.Get("/snippet/create", http.HandlerFunc(app.createSnippetForm))
-	mux.Post("/snippet/create", http.HandlerFunc(app.createSnippet))
-	mux.Get("/snippet/delete/:id", http.HandlerFunc(app.deleteSnippet))
-	mux.Get("/snippet/:id", http.HandlerFunc(app.showSnippet))
+	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
+	mux.Get("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippetForm))
+	mux.Post("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippet))
+	mux.Get("/snippet/delete/:id", dynamicMiddleware.ThenFunc(app.deleteSnippet))
+	mux.Get("/snippet/:id", dynamicMiddleware.ThenFunc(app.showSnippet))
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	//mux.Handle("/static/",http.StripPrefix("/static", fileServer))

@@ -7,13 +7,13 @@ import (
 	"github.com/justinas/alice"
 )
 
-// Update the signature for the routes() method so that it returns a 
+// Update the signature for the routes() method so that it returns a
 // http.Handler instead of *http.ServeMux.
 func (app *application) routes() http.Handler {
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
 	dynamicMiddleware := alice.New(app.session.Enable)
-	
+
 	// mux := http.NewServeMux()
 	// mux.HandleFunc("/", app.home)
 	// mux.HandleFunc("/snippet", app.showSnippet)
@@ -28,7 +28,7 @@ func (app *application) routes() http.Handler {
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	//mux.Handle("/static/",http.StripPrefix("/static", fileServer))
-	mux.Get("/static/",http.StripPrefix("/static", fileServer))
+	mux.Get("/static/", http.StripPrefix("/static", fileServer))
 
 	return standardMiddleware.Then(mux)
 }

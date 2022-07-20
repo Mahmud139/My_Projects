@@ -6,7 +6,7 @@ import (
 	//"html/template"
 	"net/http"
 	"strconv"
-	// "strings" 
+	// "strings"
 	// "unicode/utf8"
 
 	"mahmud139/snippetbox/pkg/forms"
@@ -31,34 +31,34 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	})
 
 	/*
-	data := &templateData{Snippets: s}
-	// for _, snippet := range s {
-	// 	fmt.Fprintf(w, "%v\n", snippet)
-	// }
+		data := &templateData{Snippets: s}
+		// for _, snippet := range s {
+		// 	fmt.Fprintf(w, "%v\n", snippet)
+		// }
 
-	//initialize a slice containing the paths to the two files. Note that the home.page.tmpl 
-	//must be the first file in the slice.
-	files := []string{
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl",
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
-	}
+		//initialize a slice containing the paths to the two files. Note that the home.page.tmpl
+		//must be the first file in the slice.
+		files := []string{
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/home.page.tmpl",
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
+		}
 
-	tmpl, err := template.ParseFiles(files...)
-	if err != nil {
-		//app.errorLog.Println(err.Error())
-		// http.Error(w, "Internal Server Error", 500)
-		//http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		app.serverError(w, err)
-		return
-	}
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		// app.errorLog.Println(err.Error())
-		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		app.serverError(w, err)
-	}
-	//w.Write([]byte("Hello from SnippetBox")) */
+		tmpl, err := template.ParseFiles(files...)
+		if err != nil {
+			//app.errorLog.Println(err.Error())
+			// http.Error(w, "Internal Server Error", 500)
+			//http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			app.serverError(w, err)
+			return
+		}
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			// app.errorLog.Println(err.Error())
+			// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			app.serverError(w, err)
+		}
+		//w.Write([]byte("Hello from SnippetBox")) */
 }
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
@@ -81,33 +81,33 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	flash := app.session.PopString(r, "flash")
 
 	app.render(w, r, "show.page.tmpl", &templateData{
-		Flash: flash,
+		Flash:   flash,
 		Snippet: s,
 	})
 
 	/*
-	data := &templateData{Snippet: s}
+		data := &templateData{Snippet: s}
 
-	files := []string {
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/show.page.tmpl",
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
-		"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
-	}
+		files := []string {
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/show.page.tmpl",
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/base.layout.tmpl",
+			"M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/html/footer.partial.tmpl",
+		}
 
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+		ts, err := template.ParseFiles(files...)
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
 
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
-	}
+		err = ts.Execute(w, data)
+		if err != nil {
+			app.serverError(w, err)
+		}
 
-	//w.Write([]byte("Display a new snippet"))
-	//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
-	//fmt.Fprintf(w, "%v", s) */
+		//w.Write([]byte("Display a new snippet"))
+		//fmt.Fprintf(w,"Display with specific snippet with ID %d...", id)
+		//fmt.Fprintf(w, "%v", s) */
 }
 
 func (app *application) deleteSnippet(w http.ResponseWriter, r *http.Request) {
@@ -144,9 +144,9 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 
-	// First we call r.ParseForm() which adds any data in POST request bodies 
-	// to the r.PostForm map. This also works in the same way for PUT and PATCH 
-	// requests. If there are any errors, we use our app.ClientError helper to send 
+	// First we call r.ParseForm() which adds any data in POST request bodies
+	// to the r.PostForm map. This also works in the same way for PUT and PATCH
+	// requests. If there are any errors, we use our app.ClientError helper to send
 	// a 400 Bad Request response to the user.
 	err := r.ParseForm()
 	if err != nil {
@@ -155,55 +155,55 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	/*
-	// Use the r.PostForm.Get() method to retrieve the relevant data fields 
-	// from the r.PostForm map.
-	title := r.PostForm.Get("title")
-	content := r.PostForm.Get("content")
-	expires := r.PostForm.Get("expires")
+		// Use the r.PostForm.Get() method to retrieve the relevant data fields
+		// from the r.PostForm map.
+		title := r.PostForm.Get("title")
+		content := r.PostForm.Get("content")
+		expires := r.PostForm.Get("expires")
 
-	// Initialize a map to hold any validation errors.
-	errors := make(map[string]string)
-	// Check that the title field is not blank and is not more than 100 characters
-	// long. If it fails either of those checks, add a message to the errors 
-	// map using the field name as the key.
-	if strings.TrimSpace(title) == "" {
-		errors["title"] = "This field cannot be blank"
-	} else if utf8.RuneCountInString(title) > 100 {
-		errors["title"] = "This field is too long (maximum is 100 characters"
-	}
+		// Initialize a map to hold any validation errors.
+		errors := make(map[string]string)
+		// Check that the title field is not blank and is not more than 100 characters
+		// long. If it fails either of those checks, add a message to the errors
+		// map using the field name as the key.
+		if strings.TrimSpace(title) == "" {
+			errors["title"] = "This field cannot be blank"
+		} else if utf8.RuneCountInString(title) > 100 {
+			errors["title"] = "This field is too long (maximum is 100 characters"
+		}
 
-	if strings.TrimSpace(content) == "" {
-		errors["content"] = "This field cannot be blank"
-	}
+		if strings.TrimSpace(content) == "" {
+			errors["content"] = "This field cannot be blank"
+		}
 
-	if strings.TrimSpace(expires) == "" {
-		errors["expires"] = "This field cannot be blank"
-	} else if expires != "365" && expires != "30" && expires != "7" {
-		errors["expires"] = "This field is invalid"
-	}
+		if strings.TrimSpace(expires) == "" {
+			errors["expires"] = "This field cannot be blank"
+		} else if expires != "365" && expires != "30" && expires != "7" {
+			errors["expires"] = "This field is invalid"
+		}
 
-	if len(errors) > 0 {
-		app.render(w, r, "create.page.tmpl", &templateData{
-			FormErrors: errors,
-			FormData: r.PostForm,
-		})
-		return
-	} */
+		if len(errors) > 0 {
+			app.render(w, r, "create.page.tmpl", &templateData{
+				FormErrors: errors,
+				FormData: r.PostForm,
+			})
+			return
+		} */
 
 	form := forms.New(r.PostForm)
 	form.Required("title", "content", "expires")
 	form.MaxLength("title", 100)
 	form.PermittedValues("expires", "365", "30", "7")
-	
+
 	if !form.Valid() {
 		app.render(w, r, "create.page.tmpl", &templateData{
 			Form: form,
 		})
 		return
 	}
-	
-	// Because the form data (with type url.Values) has been anonymously embedded 
-	// in the form.Form struct, we can use the Get() method to retrieve 
+
+	// Because the form data (with type url.Values) has been anonymously embedded
+	// in the form.Form struct, we can use the Get() method to retrieve
 	// the validated value for a particular form field.
 	id, err := app.snippets.Insert(form.Get("title"), form.Get("content"), form.Get("expires"))
 	if err != nil {
@@ -213,7 +213,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 
 	app.session.Put(r, "flash", "Snippet successfully created")
 	//w.Write([]byte("Create a new snippet"))
-	http.Redirect(w, r, fmt.Sprintf("/snippet/%d",id), http.StatusSeeOther)
-	/*The HTTP response status code 303 See Other is a way to redirect web applications 
+	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
+	/*The HTTP response status code 303 See Other is a way to redirect web applications
 	to a new URI, particularly after a HTTP POST has been performed*/
 }

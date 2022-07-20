@@ -28,10 +28,10 @@ import (
 // }
 
 type application struct {
-	errorLog *log.Logger
-	infoLog *log.Logger
-	session *sessions.Session
-	snippets *mysql.SnippetModel
+	errorLog      *log.Logger
+	infoLog       *log.Logger
+	session       *sessions.Session
+	snippets      *mysql.SnippetModel
 	templateCache map[string]*template.Template
 }
 
@@ -45,18 +45,18 @@ func main() {
 	/* using Environment variable for command-line flags */
 	// addr := os.Getenv("SNIPPETBOX_ADDR")
 
-	addr := flag.String("addr", "localhost:8080",  "HTTP network address")
+	addr := flag.String("addr", "localhost:8080", "HTTP network address")
 	//Define a new command line flag for MySQL DSN string
 	dsn := flag.String("dsn", "web:mahmud@/snippetbox?parseTime=true", "MySQL data source name")
 	// Define a new command-line flag for the session secret (a random key which
 	// will be used to encrypt and authenticate session cookies). It should be 32 bytes long.
-	secret := flag.String("secret",  "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
+	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
 	flag.Parse()
 
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate | log.Ltime)
-	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate | log.Ltime | log.Lshortfile)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db, err := openDB(*dsn) 
+	db, err := openDB(*dsn)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
@@ -68,20 +68,20 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	// Use the sessions.New() function to initialize a new session manager, 
-	// passing in the secret key as the parameter. Then we configure it so 
+	// Use the sessions.New() function to initialize a new session manager,
+	// passing in the secret key as the parameter. Then we configure it so
 	// sessions always expires after 1 hours.
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 1 * time.Hour
 
 	app := &application{
-		errorLog: errorLog,
-		infoLog: infoLog,
-		session: session,
-		snippets: &mysql.SnippetModel{DB: db},
+		errorLog:      errorLog,
+		infoLog:       infoLog,
+		session:       session,
+		snippets:      &mysql.SnippetModel{DB: db},
 		templateCache: templateCache,
 	}
-	
+
 	/* transfer to routes.go file
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", app.home)
@@ -118,10 +118,10 @@ func main() {
 
 	/* implementing the http.Server Error log using our custom logger*/
 	infoLog.Printf("Starting Server on %v \n", *addr)
-	srv := &http.Server {
-		Addr: *addr,
+	srv := &http.Server{
+		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler: app.routes(),
+		Handler:  app.routes(),
 	}
 	err = srv.ListenAndServe()
 	errorLog.Fatal(err)

@@ -32,9 +32,9 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 	return td
 }
 
-func (app *application) render(w http.ResponseWriter, r *http.Request, name string, td *templateData){
-	// Retrieve the appropriate template set from the cache based on the page name 
-	// (like 'home.page.tmpl'). If no entry exists in the cache with the 
+func (app *application) render(w http.ResponseWriter, r *http.Request, name string, td *templateData) {
+	// Retrieve the appropriate template set from the cache based on the page name
+	// (like 'home.page.tmpl'). If no entry exists in the cache with the
 	// provided name, call the serverError helper method that we made earlier.
 	ts, ok := app.templateCache[name]
 	if !ok {
@@ -42,7 +42,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, name stri
 		return
 	}
 
-	buf :=new(bytes.Buffer)
+	buf := new(bytes.Buffer)
 
 	err := ts.Execute(buf, app.addDefaultData(td, r))
 	if err != nil {

@@ -73,6 +73,7 @@ func main() {
 	// sessions always expires after 1 hours.
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 1 * time.Hour
+	session.Secure = true
 
 	app := &application{
 		errorLog:      errorLog,
@@ -123,7 +124,7 @@ func main() {
 		ErrorLog: errorLog,
 		Handler:  app.routes(),
 	}
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS("M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/cert.pem", "M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/key.pem")
 	errorLog.Fatal(err)
 }
 

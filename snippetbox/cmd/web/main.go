@@ -132,6 +132,9 @@ func main() {
 		ErrorLog: errorLog,
 		Handler:  app.routes(),
 		TLSConfig: tlsConfig,
+		IdleTimeout: time.Minute,
+		ReadTimeout: 5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 	err = srv.ListenAndServeTLS("M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/cert.pem", "M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/key.pem")
 	errorLog.Fatal(err)

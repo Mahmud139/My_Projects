@@ -128,7 +128,7 @@ func main() {
 	//errorLog.Fatal(err)
 
 	/* implementing the http.Server Error log using our custom logger*/
-	infoLog.Printf("Starting Server on %v \n", *addr)
+	infoLog.Printf("Starting Server on https://%v \n", *addr)
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,

@@ -12,7 +12,10 @@
         <pre><code>{{.Content}}</code></pre>
         <div class="metadata">
             <time>Created: {{humanDate .Created}}</time>
-            <a href="/snippet/delete/{{.ID}}" id="delete">Delete</a>
+            <form action="/snippet/delete/{{.ID}}" method="POST">
+                <button>Delete</button>
+            </form>
+            <!-- <a href="" id="delete">Delete</a> -->
             <time>Expires: {{humanDate .Expires}}</time>
         </div>
     </div>

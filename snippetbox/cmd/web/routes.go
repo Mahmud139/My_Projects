@@ -21,8 +21,8 @@ func (app *application) routes() http.Handler {
 
 	mux := pat.New()
 	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
-	mux.Get("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippetForm))
-	mux.Post("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippet))
+	mux.Get("/snippet/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createSnippetForm))
+	mux.Post("/snippet/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createSnippet))
 	mux.Post("/snippet/delete/:id", dynamicMiddleware.ThenFunc(app.deleteSnippet))
 	mux.Get("/snippet/:id", dynamicMiddleware.ThenFunc(app.showSnippet))
 
@@ -30,7 +30,7 @@ func (app *application) routes() http.Handler {
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
-	mux.Post("/user/logout", dynamicMiddleware.ThenFunc(app.logoutUser))
+	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.logoutUser))
 
 	fileServer := http.FileServer(http.Dir("M:/code_of_Golang/go_workspace/src/projects/snippetbox/ui/static"))
 	//mux.Handle("/static/",http.StripPrefix("/static", fileServer))

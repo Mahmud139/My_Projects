@@ -58,8 +58,15 @@ func (u *UserModel) Authenticate(email, password string) (int, error) {
 	stmt := `SELECT id, hashed_password FROM users WHERE email = ? AND active =TRUE`
 	row := u.DB.QueryRow(stmt, email)
 	err := row.Scan(&id, &hashedPassword)
-	
-	return 0, nil
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, models.ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+
+	return id, nil
 }
 
 // We'll use the Get method to fetch details for a specific user based 

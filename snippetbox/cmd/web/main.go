@@ -34,7 +34,7 @@ type application struct {
 	session       *sessions.Session
 	snippets      *mysql.SnippetModel
 	templateCache map[string]*template.Template
-	users *mysql.UserModel
+	users         *mysql.UserModel
 }
 
 func main() {
@@ -83,14 +83,14 @@ func main() {
 		session:       session,
 		snippets:      &mysql.SnippetModel{DB: db},
 		templateCache: templateCache,
-		users: &mysql.UserModel{DB: db},
+		users:         &mysql.UserModel{DB: db},
 	}
 
-	// Initialize a tls.Config struct to hold the non-default TLS settings we want 
+	// Initialize a tls.Config struct to hold the non-default TLS settings we want
 	// the server to use.
 	tlsConfig := &tls.Config{
 		PreferServerCipherSuites: true,
-		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+		CurvePreferences:         []tls.CurveID{tls.X25519, tls.CurveP256},
 	}
 
 	/* transfer to routes.go file
@@ -130,12 +130,12 @@ func main() {
 	/* implementing the http.Server Error log using our custom logger*/
 	infoLog.Printf("Starting Server on https://%v \n", *addr)
 	srv := &http.Server{
-		Addr:     *addr,
-		ErrorLog: errorLog,
-		Handler:  app.routes(),
-		TLSConfig: tlsConfig,
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
+		Addr:         *addr,
+		ErrorLog:     errorLog,
+		Handler:      app.routes(),
+		TLSConfig:    tlsConfig,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 	err = srv.ListenAndServeTLS("M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/cert.pem", "M:/code_of_Golang/go_workspace/src/projects/snippetbox/tls/key.pem")

@@ -77,7 +77,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	
+
 	app.render(w, r, "show.page.tmpl", &templateData{
 		Snippet: s,
 	})
@@ -221,7 +221,6 @@ func (app *application) signupUserForm(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-
 func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -242,7 +241,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
-	// Try to create a new user record in the database. If the email already exists 
+	// Try to create a new user record in the database. If the email already exists
 	// add an error message to the form and re-display it.
 	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))
 	if err != nil {
@@ -255,7 +254,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Otherwise add a confirmation flash message to the session confirming that 
+	// Otherwise add a confirmation flash message to the session confirming that
 	// their signup worked and asking them to log in.
 	app.session.Put(r, "flash", "Your signup was successful, Please login.")
 
@@ -265,14 +264,12 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintln(w, "Create a new user")
 }
 
-
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "login.page.tmpl", &templateData{
 		Form: forms.New(nil),
 	})
 	//fmt.Fprintln(w, "Display the user login form")
 }
-
 
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintln(w, "Authenticate and login the user")
@@ -281,8 +278,8 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-	
-	// Check whether the credentials are valid. If they're not, add a generic error 
+
+	// Check whether the credentials are valid. If they're not, add a generic error
 	// message to the form failures map and re-display the login page.
 	form := forms.New(r.PostForm)
 	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
@@ -300,10 +297,10 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
-	// Remove the authenticatedUserID from the session data so that the user is 
+	// Remove the authenticatedUserID from the session data so that the user is
 	// 'logged out'.
 	app.session.Remove(r, "authenticatedUserID")
-	// Add a flash message to the session to confirm to the user that they've been 
+	// Add a flash message to the session to confirm to the user that they've been
 	// logged out.
 	app.session.Put(r, "flash", "You've been logged out successfully!")
 	http.Redirect(w, r, "/", http.StatusSeeOther)

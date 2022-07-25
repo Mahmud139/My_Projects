@@ -50,6 +50,15 @@ func (u *UserModel) Insert(name, email, password string) error {
 // the provided email address and password. This will return the relevant 
 // user ID if they do.
 func (u *UserModel) Authenticate(email, password string) (int, error) {
+	// Retrieve the id and hashed password associated with the given email. If no 
+	// matching email exists, or the user is not active, we return the 
+	// ErrInvalidCredentials error.
+	var id int
+	var hashedPassword []byte
+	stmt := `SELECT id, hashed_password FROM users WHERE email = ? AND active =TRUE`
+	row := u.DB.QueryRow(stmt, email)
+	err := row.Scan(&id, &hashedPassword)
+	
 	return 0, nil
 }
 

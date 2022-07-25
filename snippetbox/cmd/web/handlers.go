@@ -273,6 +273,7 @@ func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintln(w, "Display the user login form")
 }
 
+
 func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Authenticate and login the user")
 }

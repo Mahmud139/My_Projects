@@ -13,7 +13,6 @@
         <div class="metadata">
             <time>Created: {{humanDate .Created}}</time>
             <form action="/snippet/delete/{{.ID}}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <button>Delete</button>
             </form>
             <!-- <a href="" id="delete">Delete</a> -->

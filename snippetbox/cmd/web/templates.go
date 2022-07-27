@@ -10,7 +10,7 @@ import (
 )
 
 type templateData struct {
-	CSRFToken string
+	CSRFToken 		string
 	CurrentYear     int
 	Flash           string
 	Form            *forms.Form

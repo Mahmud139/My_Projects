@@ -17,7 +17,7 @@ type UserModel struct {
 }
 
 // We'll use the Insert method to add a new record to the users table.
-func (u *UserModel) Insert(name, email, password string) error {
+func (m *UserModel) Insert(name, email, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (u *UserModel) Insert(name, email, password string) error {
 	stmt := `INSERT INTO users (name, email, hashed_password, created)
 	VALUES (?, ?, ?, UTC_TIMESTAMP())`
 
-	_, err = u.DB.Exec(stmt, name, email, hashedPassword)
+	_, err = m.DB.Exec(stmt, name, email, hashedPassword)
 	if err != nil {
 		// If this returns an error, we use the errors.As() function to check 
 		// whether the error has the type *mysql.MySQLError. If it does, the 
@@ -49,14 +49,14 @@ func (u *UserModel) Insert(name, email, password string) error {
 // We'll use the Authenticate method to verify whether a user exists with 
 // the provided email address and password. This will return the relevant 
 // user ID if they do.
-func (u *UserModel) Authenticate(email, password string) (int, error) {
+func (m *UserModel) Authenticate(email, password string) (int, error) {
 	// Retrieve the id and hashed password associated with the given email. If no 
 	// matching email exists, or the user is not active, we return the 
 	// ErrInvalidCredentials error.
 	var id int
 	var hashedPassword []byte
 	stmt := `SELECT id, hashed_password FROM users WHERE email = ? AND active =TRUE`
-	row := u.DB.QueryRow(stmt, email)
+	row := m.DB.QueryRow(stmt, email)
 	err := row.Scan(&id, &hashedPassword)
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
@@ -71,7 +71,19 @@ func (u *UserModel) Authenticate(email, password string) (int, error) {
 
 // We'll use the Get method to fetch details for a specific user based 
 // on their user ID.
-func (u *UserModel) Get(id int) (*models.User, error) {
-	return nil, nil
+func (m *UserModel) Get(id int) (*models.User, error) {
+	u := &models.User{}
+
+	stmt := `SELECT id, name, email, created, active FROM users WHERE id = ?`
+	err := m.DB.QueryRow(stmt, id).Scan(&u.ID, &u.Name, &u.Email, &u.Created, &u.Active)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return u, nil
 }
 

@@ -17,6 +17,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+type contexKey string
+
+const contextKeyIsAuthenticated = contexKey("isAuthenticated")
+
 // func checkErr(err error) {
 // 	if err != nil {
 // 		log.Fatal(err)

@@ -33,11 +33,6 @@ func TestHumanDate(t *testing.T) {
 			tm: time.Time{},
 			want: "",
 		}, 
-		{
-			name: "CET",
-			tm: time.Date(2022, 07, 29, 03, 50, 0, 0, time.FixedZone("UTC", 6*60*60)),
-			want: "29 Jul 2022 at 09:50",
-		},
 	}
 
 	//loop over the test cases

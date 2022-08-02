@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -25,5 +26,39 @@ func TestSecureHeaders(t *testing.T) {
 	// method, passing in the http.ResponseRecorder and dummy http.Request to 
 	// execute it.
 	secureHeaders(next).ServeHTTP(rr, r)
+
+	// Call the Result() method on the http.ResponseRecorder to get the results 
+	// of the test.
+	rs := rr.Result()
+
+	// Check that the middleware has correctly set the X-Frame-Options header 
+	// on the response.
+	frameOption := rs.Header.Get("X-Frame-Options")
+	if frameOption != "deny" {
+		t.Errorf("want %q; got %q", "deny", frameOption)
+	}
+
+	// Check that the middleware has correctly set the X-XSS-Protection header 
+	// on the response.
+	xssProtection := rs.Header.Get("X-XSS-Protection")
+	if xssProtection !=  "1; mode=block" {
+		t.Errorf("want %q; got %q",  "1; mode=block", xssProtection)
+	}
+	
+	// Check that the middleware has correctly called the next handler in line 
+	// and the response status code and body are as expected.
+	if rs.StatusCode != http.StatusOK {
+		t.Errorf("want %d; got %d", http.StatusOK, rs.StatusCode)
+	}
+
+	defer rs.Body.Close()
+	body, err := ioutil.ReadAll(rs.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if string(body) != "OK" {
+		t.Errorf("want %q; got %q", "OK", string(body))
+	}
 
 }

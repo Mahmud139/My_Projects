@@ -60,15 +60,14 @@ func (app *application) requireAuthentication(next http.Handler) http.Handler {
 	})
 }
 
-
-// Create a NoSurf middleware function which uses a customized CSRF cookie with 
+// Create a NoSurf middleware function which uses a customized CSRF cookie with
 // the Secure, Path and HttpOnly flags set.
 func noSurf(next http.Handler) http.Handler {
 	csrfHandler := nosurf.New(next)
 	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
-		Path: "/",
-		Secure: true,
+		Path:     "/",
+		Secure:   true,
 	})
 	return csrfHandler
 }
@@ -83,9 +82,9 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			return
 		}
 
-		// Fetch the details of the current user from the database. If no matching 
-		// record is found, or the current user is has been deactivated, remove the 
-		// (invalid) authenticatedUserID value from their session and call the next 
+		// Fetch the details of the current user from the database. If no matching
+		// record is found, or the current user is has been deactivated, remove the
+		// (invalid) authenticatedUserID value from their session and call the next
 		// handler in the chain as normal.
 		user, err := app.users.Get(app.session.GetInt(r, "authenticatedUserID"))
 		if errors.Is(err, models.ErrNoRecord) || !user.Active {
@@ -97,9 +96,9 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			return
 		}
 
-		// Otherwise, we know that the request is coming from a active, authenticated, 
-		// user. We create a new copy of the request, with a true boolean value 
-		// added to the request context to indicate this, and call the next handler 
+		// Otherwise, we know that the request is coming from a active, authenticated,
+		// user. We create a new copy of the request, with a true boolean value
+		// added to the request context to indicate this, and call the next handler
 		// in the chain *using this new copy of the request*.
 		ctx := context.WithValue(r.Context(), contextKeyIsAuthenticated, true)
 		next.ServeHTTP(w, r.WithContext(ctx))

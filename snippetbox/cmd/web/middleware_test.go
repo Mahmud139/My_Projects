@@ -15,37 +15,37 @@ func TestSecureHeaders(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Create a mock HTTP handler that we can pass to our secureHeaders 
+	// Create a mock HTTP handler that we can pass to our secureHeaders
 	// middleware, which writes a 200 status code and "OK" response body.
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	// Pass the mock HTTP handler to our secureHeaders middleware. Because 
-	// secureHeaders *returns* a http.Handler we can call its ServeHTTP() 
-	// method, passing in the http.ResponseRecorder and dummy http.Request to 
+	// Pass the mock HTTP handler to our secureHeaders middleware. Because
+	// secureHeaders *returns* a http.Handler we can call its ServeHTTP()
+	// method, passing in the http.ResponseRecorder and dummy http.Request to
 	// execute it.
 	secureHeaders(next).ServeHTTP(rr, r)
 
-	// Call the Result() method on the http.ResponseRecorder to get the results 
+	// Call the Result() method on the http.ResponseRecorder to get the results
 	// of the test.
 	rs := rr.Result()
 
-	// Check that the middleware has correctly set the X-Frame-Options header 
+	// Check that the middleware has correctly set the X-Frame-Options header
 	// on the response.
 	frameOption := rs.Header.Get("X-Frame-Options")
 	if frameOption != "deny" {
 		t.Errorf("want %q; got %q", "deny", frameOption)
 	}
 
-	// Check that the middleware has correctly set the X-XSS-Protection header 
+	// Check that the middleware has correctly set the X-XSS-Protection header
 	// on the response.
 	xssProtection := rs.Header.Get("X-XSS-Protection")
-	if xssProtection !=  "1; mode=block" {
-		t.Errorf("want %q; got %q",  "1; mode=block", xssProtection)
+	if xssProtection != "1; mode=block" {
+		t.Errorf("want %q; got %q", "1; mode=block", xssProtection)
 	}
-	
-	// Check that the middleware has correctly called the next handler in line 
+
+	// Check that the middleware has correctly called the next handler in line
 	// and the response status code and body are as expected.
 	if rs.StatusCode != http.StatusOK {
 		t.Errorf("want %d; got %d", http.StatusOK, rs.StatusCode)

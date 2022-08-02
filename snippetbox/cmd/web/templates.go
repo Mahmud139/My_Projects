@@ -10,7 +10,7 @@ import (
 )
 
 type templateData struct {
-	CSRFToken 		string
+	CSRFToken       string
 	CurrentYear     int
 	Flash           string
 	Form            *forms.Form
@@ -74,7 +74,7 @@ func humanDate(t time.Time) string {
 	if t.IsZero() {
 		return ""
 	}
-	
+
 	return t.UTC().Local().Format("02 Jan 2006 at 15:04")
 }
 

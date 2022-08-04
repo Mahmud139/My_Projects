@@ -8,6 +8,7 @@ import (
 )
 
 func TestSecureHeaders(t *testing.T) {
+	t.Parallel()
 	rr := httptest.NewRecorder()
 
 	r, err := http.NewRequest(http.MethodGet, "/", nil)

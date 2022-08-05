@@ -8,7 +8,7 @@ import (
 )
 
 func TestPing(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 	//initialize a new httptest.NewRecorder
 	rr := httptest.NewRecorder()
 

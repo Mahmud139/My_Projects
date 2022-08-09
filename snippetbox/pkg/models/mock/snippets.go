@@ -3,8 +3,6 @@ package mock
 import (
 	"mahmud139/snippetbox/pkg/models"
 	"time"
-
-	
 )
 
 var mockSnippet = &models.Snippet{

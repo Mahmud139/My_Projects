@@ -5,6 +5,8 @@ import (
 	// "log"
 	"bytes"
 	"net/http"
+	"net/url"
+
 	// "net/http/httptest"
 	"testing"
 )
@@ -157,5 +159,22 @@ func TestSignupUser(t *testing.T) {
 		{"Invalid CSRF Token", "", "", "", "wrongToken", http.StatusBadRequest, nil},
 	}
 
-	
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			form := url.Values{}
+			form.Add("name", tt.userName)
+			form.Add("email", tt.userEmail)
+			form.Add("password", tt.userPassword)
+			form.Add("csrf_token", tt.csrfToken)
+
+			code, _, body := ts.postForm(t, "/user/signup", form)
+			if code != tt.wantCode {
+				t.Errorf("want %d; got %d", tt.wantCode, code)
+			}
+
+			if !bytes.Contains(body, tt.wantBody) {
+				t.Errorf("want body %s to contain %q", body, tt.wantBody)
+			}
+		})
+	}
 }

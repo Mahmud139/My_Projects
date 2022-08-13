@@ -99,8 +99,8 @@ func TestShowSnippet(t *testing.T) {
 	defer ts.Close()
 
 	tests := []struct {
-		name string
-		urlPath string
+		name     string
+		urlPath  string
 		wantCode int
 		wantBody []byte
 	}{
@@ -139,15 +139,15 @@ func TestSignupUser(t *testing.T) {
 	//t.Log(csrfToken)
 
 	tests := []struct {
-		name string
-		userName string
-		userEmail string
+		name         string
+		userName     string
+		userEmail    string
 		userPassword string
-		csrfToken string
-		wantCode int
-		wantBody []byte
-	} {
-		{"Valid submission", "Bob", "bob@example.com", "validPa$$word", csrfToken, http.StatusSeeOther, nil}, 
+		csrfToken    string
+		wantCode     int
+		wantBody     []byte
+	}{
+		{"Valid submission", "Bob", "bob@example.com", "validPa$$word", csrfToken, http.StatusSeeOther, nil},
 		{"Empty name", "", "bob@example.com", "validPa$$word", csrfToken, http.StatusOK, []byte("This field cannot be blank")},
 		{"Empty email", "Bob", "", "validPa$$word", csrfToken, http.StatusOK, []byte("This field cannot be blank")},
 		{"Empty password", "Bob", "bob@example.com", "", csrfToken, http.StatusOK, []byte("This field cannot be blank")},

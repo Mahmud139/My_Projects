@@ -115,8 +115,8 @@ func (ts *testServer) postForm(t *testing.T, urlPath string, form url.Values) (i
 
 	defer rs.Body.Close()
 	body, err := ioutil.ReadAll(rs.Body)
-	t.Log(string(body))
-	t.Log(rs.StatusCode)
+	// t.Log(string(body))
+	// t.Log(rs.StatusCode)
 	if err != nil {
 		t.Fatal(err)
 	}

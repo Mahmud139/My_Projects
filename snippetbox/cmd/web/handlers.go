@@ -74,8 +74,10 @@ func (app *application) userProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", user)
-	//app.render(w, r, "profile.page.tmpl", nil)
+	// fmt.Fprintf(w, "%+v", user)
+	app.render(w, r, "profile.page.tmpl", &templateData{
+		User: user,
+	})
 }
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {

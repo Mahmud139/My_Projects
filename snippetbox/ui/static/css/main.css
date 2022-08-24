@@ -241,6 +241,20 @@ button:hover {
     overflow: auto;
 }
 
+#delete {
+    position: relative;
+    background-color: #e8e8e8;
+    /* left: 50%; */
+}
+
+#delete form{
+    /* left: 50%; */
+    padding: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .snippet .metadata span {
     float: right;
 }
@@ -312,9 +326,4 @@ footer {
     height: 60px;
     color: #6A6C6F;
     text-align: center;
-}
-
-#delete {
-    padding-left: 4.5in;
-    
 }

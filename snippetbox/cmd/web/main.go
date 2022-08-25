@@ -34,6 +34,7 @@ const contextKeyIsAuthenticated = contexKey("isAuthenticated")
 // }
 
 type application struct {
+	debug bool
 	errorLog *log.Logger
 	infoLog  *log.Logger
 	session  *sessions.Session
@@ -65,6 +66,7 @@ func main() {
 	// addr := os.Getenv("SNIPPETBOX_ADDR")
 
 	addr := flag.String("addr", "localhost:8080", "HTTP network address")
+	debug := flag.Bool("debug", false, "Enable debug mode")
 	//Define a new command line flag for MySQL DSN string
 	dsn := flag.String("dsn", "web:mahmud@/snippetbox?parseTime=true", "MySQL data source name")
 	// Define a new command-line flag for the session secret (a random key which
@@ -96,6 +98,7 @@ func main() {
 	session.SameSite = http.SameSiteStrictMode
 
 	app := &application{
+		debug: *debug,
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		session:       session,

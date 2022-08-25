@@ -356,6 +356,14 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "authenticatedUserID", id)
+	// Use the PopString method to retrieve and remove a value from the session 
+	// data in one step. If no matching key exists this will return the empty string.
+	path := app.session.PopString(r, "redirectPathAfterLogin")
+	if path != "" {
+		http.Redirect(w, r, path, http.StatusSeeOther)
+		return
+	}
+	
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
